@@ -41,8 +41,12 @@ export const useWeatherStore = create<UseWeatherStore>((set, get) => ({
       });
       set({ data: response, loaded: true, loading: false });
       return response;
-    } catch (error: ApiError) {
-      set({ error, loading: false, loaded: true });
+    } catch (error) {
+      if (error instanceof ApiError) {
+        set({ error, loading: false, loaded: true });
+      } else {
+        set({ error: null, loading: false, loaded: true });
+      }
       throw error;
     }
   },
